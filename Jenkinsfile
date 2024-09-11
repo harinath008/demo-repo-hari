@@ -2,7 +2,7 @@ pipeline {
 	agent any
 	
 	parameters {
-		string defaultValue: 'internalEventListener', description: 'Iflow Name', name: 'Name', trim: true
+		string defaultValue: 'IF_MDG_MATMAS_INBOUND_PIM', description: 'Iflow Name', name: 'Name', trim: true
 	}
 
 	//Configure the following environment variables before executing the Jenkins Job	
