@@ -103,12 +103,12 @@ pipeline {
 		stage('Code Analysis') {
             steps {
 		    script{
-			    def zipcpilintfile = "cpilint-1.0.4.zip";
+			    def zipcpilintfile = "cpilint-1.0.5.zip";
 			    def unzipcpilintfile = "cpilint";
 			    fileOperations([fileUnZipOperation(filePath: zipcpilintfile, targetLocation: unzipcpilintfile)])
 			    fileOperations([fileDeleteOperation(excludes: '', includes: zipcpilintfile)])
 			    sh "chmod a+rwx -R $WORKSPACE/cpilint"
-			    sh "$WORKSPACE/cpilint/cpilint-1.0.4/bin/cpilint -rules $WORKSPACE/rules.xml -files $WORKSPACE/IntegrationContent/IntegrationArtefacts/ZipFiles/${env.Filename}"
+			    sh "$WORKSPACE/cpilint/cpilint-1.0.5.zip/bin/cpilint -rules $WORKSPACE/rules.xml -files $WORKSPACE/IntegrationContent/IntegrationArtefacts/ZipFiles/${env.Filename}"
 		    }
 	    }
         }
