@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cpilint>
+	<rules>
+		<!-- Require that all iflows have a description. -->
+		<iflow-description-required/>
+		<!-- Don't allow the social media receiver adapters. -->
+		<disallowed-receiver-adapters>
+			<disallow>facebook</disallow>
+			<disallow>twitter</disallow>
+		</disallowed-receiver-adapters>
+		<!-- Don't allow Router steps configured with both XML and non-XML conditions. -->
+		<multi-condition-type-routers-not-allowed/>
+		<!-- Message Mapping and XSLT are the two allowed mapping types. -->
+		<allowed-mapping-types>
+			<allow>message-mapping</allow>
+			<allow>xslt-mapping</allow>
+		</allowed-mapping-types>
+		<!-- Make sure that all data store writes are encrypted. -->
+		<unencrypted-data-store-write-not-allowed/>
+		<disallowed-user-roles>
+			<disallow>ESBMessaging.send</disallow>
+		</disallowed-user-roles>
+		<duplicate-resources-not-allowed>
+			<resource-type>groovy-script</resource-type>
+			<resource-type>javascript-script</resource-type>
+		</duplicate-resources-not-allowed>
+		<csrf-protection-required/>
+		<client-cert-sender-channel-auth-not-allowed/>
+		<disallowed-xslt-versions>
+			<disallow>1.0</disallow>
+		</disallowed-xslt-versions>
+		<unencrypted-endpoints-not-allowed/>
+		<matching-process-direct-channels-required/>
+		<cleartext-basic-auth-not-allowed/>
+		<!-- Naming Conventions -->
+		<!-- Example: HTTP receiver channel names must start with HTTP_RCV_ -->
+		<naming>
+			<scheme>
+				<starts-with>HTTP_RCV_</starts-with>
+			</scheme>
+			<message>HTTP receiver channel names must start with HTTP_RCV_</message>
+			<apply-to>http-receiver-channel.name</apply-to>
+		</naming>
+		<!-- Example: Participant names must start with OP_, B2B_, or CP_ -->
+		<naming>
+			<scheme>
+				<or>
+					<starts-with>OP_</starts-with>
+					<starts-with>B2B_</starts-with>
+					<starts-with>CP_</starts-with>
+				</or>
+			</scheme>
+			<message>Participant names must start with OP_, B2B_, or CP_</message>
+			<apply-to>sender.name</apply-to>
+			<apply-to>receiver.name</apply-to>
+		</naming>
+		<!-- Example: XSLT mapping step names must start with XSL_ -->
+		<naming>
+			<scheme>
+				<starts-with>XSL_</starts-with>
+			</scheme>
+			<message>XSLT mapping step names must start with XSL_</message>
+			<apply-to>xslt-mapping.name</apply-to>
+		</naming>
+		<!-- Example: Message Mapping steps must not use default names -->
+		<naming>
+			<scheme>
+				<not>
+					<regex>Message Mapping \d+</regex>
+				</not>
+			</scheme>
+			<message>Don't use default Message Mapping step names</message>
+			<apply-to>message-mapping.name</apply-to>
+		</naming>
+		<!-- Naming conventions for all channels -->
+		<naming>
+			<scheme>
+				<starts-with>SND_</starts-with>
+			</scheme>
+			<message>Sender channel names must start with SND_</message>
+			<apply-to>sender-channel.name</apply-to>
+		</naming>
+		<naming>
+			<scheme>
+				<starts-with>RCV_</starts-with>
+			</scheme>
+			<message>Receiver channel names must start with RCV_</message>
+			<apply-to>receiver-channel.name</apply-to>
+		</naming>
+		<!-- Naming conventions for all flow steps -->
+		<naming>
+			<scheme>
+				<starts-with>MAP_</starts-with>
+			</scheme>
+			<message>Mapping step names must start with MAP_</message>
+			<apply-to>mapping.name</apply-to>
+		</naming>
+		<naming>
+			<scheme>
+				<starts-with>MM_</starts-with>
+			</scheme>
+			<message>Message Mapping step names must start with MM_</message>
+			<apply-to>message-mapping.name</apply-to>
+		</naming>
+		<naming>
+			<scheme>
+				<starts-with>XSL_</starts-with>
+			</scheme>
+			<message>XSLT Mapping step names must start with XSL_</message>
+			<apply-to>xslt-mapping.name</apply-to>
+		</naming>
+		<naming>
+			<scheme>
+				<starts-with>OP_</starts-with>
+			</scheme>
+			<message>Operation Mapping step names must start with OP_</message>
+			<apply-to>operation-mapping.name</apply-to>
+		</naming>
+		<naming>
+			<scheme>
+				<starts-with>SCR_</starts-with>
+			</scheme>
+			<message>Script step names must start with SCR_</message>
+			<apply-to>script.name</apply-to>
+		</naming>
+		<naming>
+			<scheme>
+				<starts-with>GRV_</starts-with>
+			</scheme>
+			<message>Groovy script step names must start with GRV_</message>
+			<apply-to>groovy-script.name</apply-to>
+		</naming>
+		<naming>
+			<scheme>
+				<starts-with>JS_</starts-with>
+			</scheme>
+			<message>JavaScript script step names must start with JS_</message>
+			<apply-to>js-script.name</apply-to>
+		</naming>
+		<naming>
+			<scheme>
+				<starts-with>CM_</starts-with>
+			</scheme>
+			<message>Content Modifier step names must start with CM_</message>
+			<apply-to>content-modifier.name</apply-to>
+		</naming>
+		<naming>
+			<scheme>
+				<starts-with>FLT_</starts-with>
+			</scheme>
+			<message>Filter step names must start with FLT_</message>
+			<apply-to>filter.name</apply-to>
+		</naming>
+		<naming>
+			<scheme>
+				<starts-with>XMLV_</starts-with>
+			</scheme>
+			<message>XML Validator step names must start with XMLV_</message>
+			<apply-to>xml-validator.name</apply-to>
+		</naming>
+		<naming>
+			<scheme>
+				<starts-with>EDIV_</starts-with>
+			</scheme>
+			<message>EDI Validator step names must start with EDIV_</message>
+			<apply-to>edi-validator.name</apply-to>
+		</naming>
+		<naming>
+			<scheme>
+				<starts-with>DSO_</starts-with>
+			</scheme>
+			<message>Data Store Operations step names must start with DSO_</message>
+			<apply-to>data-store-operations.name</apply-to>
+		</naming>
+		<naming>
+			<scheme>
+				<starts-with>GETDSO_</starts-with>
+			</scheme>
+			<message>Get Data Store Operations step names must start with GETDSO_</message>
+			<apply-to>get-data-store-operations.name</apply-to>
+		</naming>
+		<naming>
+			<scheme>
+				<starts-with>SELDSO_</starts-with>
+			</scheme>
+			<message>Select Data Store Operations step names must start with SELDSO_</message>
+			<apply-to>select-data-store-operations.name</apply-to>
+		</naming>
+		<naming>
+			<scheme>
+				<starts-with>DELDSO_</starts-with>
+			</scheme>
+			<message>Delete Data Store Operations step names must start with DELDSO_</message>
+			<apply-to>delete-data-store-operations.name</apply-to>
+		</naming>
+		<naming>
+			<scheme>
+				<starts-with>WRDSO_</starts-with>
+			</scheme>
+			<message>Write Data Store Operations step names must start with WRDSO_</message>
+			<apply-to>write-data-store-operations.name</apply-to>
+		</naming>
+		<!-- Custom Checks -->
+		<!-- Example: Ensure all participant names are in uppercase -->
+		<naming>
+			<scheme>
+				<regex>[A-Z_]+</regex>
+			</scheme>
+			<message>Participant names must be uppercase</message>
+			<apply-to>sender.name</apply-to>
+			<apply-to>receiver.name</apply-to>
+		</naming>
+
+
+        <!-- Example: Ariba sender channel names must start with AR_ -->
+        <naming>
+            <scheme>
+                <starts-with>AR_</starts-with>
+            </scheme>
+            <message>Ariba sender channel names must start with AR_</message>
+            <apply-to>ariba-sender-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: Ariba receiver channel names must start with AR_ -->
+        <naming>
+            <scheme>
+                <starts-with>AR_</starts-with>
+            </scheme>
+            <message>Ariba receiver channel names must start with AR_</message>
+            <apply-to>ariba-receiver-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: AMQP sender channel names must start with AMQP_SND_ -->
+        <naming>
+            <scheme>
+                <starts-with>AMQP_SND_</starts-with>
+            </scheme>
+            <message>AMQP sender channel names must start with AMQP_SND_</message>
+            <apply-to>amqp-sender-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: AMQP receiver channel names must start with AMQP_RCV_ -->
+        <naming>
+            <scheme>
+                <starts-with>AMQP_RCV_</starts-with>
+            </scheme>
+            <message>AMQP receiver channel names must start with AMQP_RCV_</message>
+            <apply-to>amqp-receiver-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: AS2 sender channel names must start with AS2_SND_ -->
+        <naming>
+            <scheme>
+                <starts-with>AS2_SND_</starts-with>
+            </scheme>
+            <message>AS2 sender channel names must start with AS2_SND_</message>
+            <apply-to>as2-sender-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: AS2 receiver channel names must start with AS2_RCV_ -->
+        <naming>
+            <scheme>
+                <starts-with>AS2_RCV_</starts-with>
+            </scheme>
+            <message>AS2 receiver channel names must start with AS2_RCV_</message>
+            <apply-to>as2-receiver-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: Azure Storage sender channel names must start with AZURE_SND_ -->
+        <naming>
+            <scheme>
+                <starts-with>AZURE_SND_</starts-with>
+            </scheme>
+            <message>Azure Storage sender channel names must start with AZURE_SND_</message>
+            <apply-to>azurestorage-sender-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: Azure Storage receiver channel names must start with AZURE_RCV_ -->
+        <naming>
+            <scheme>
+                <starts-with>AZURE_RCV_</starts-with>
+            </scheme>
+            <message>Azure Storage receiver channel names must start with AZURE_RCV_</message>
+            <apply-to>azurestorage-receiver-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: Dropbox sender channel names must start with DBX_SND_ -->
+        <naming>
+            <scheme>
+                <starts-with>DBX_SND_</starts-with>
+            </scheme>
+            <message>Dropbox sender channel names must start with DBX_SND_</message>
+            <apply-to>dropbox-sender-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: Dropbox receiver channel names must start with DBX_RCV_ -->
+        <naming>
+            <scheme>
+                <starts-with>DBX_RCV_</starts-with>
+            </scheme>
+            <message>Dropbox receiver channel names must start with DBX_RCV_</message>
+            <apply-to>dropbox-receiver-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: FTP sender channel names must start with FTP_SND_ -->
+        <naming>
+            <scheme>
+                <starts-with>FTP_SND_</starts-with>
+            </scheme>
+            <message>FTP sender channel names must start with FTP_SND_</message>
+            <apply-to>ftp-sender-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: FTP receiver channel names must start with FTP_RCV_ -->
+        <naming>
+            <scheme>
+                <starts-with>FTP_RCV_</starts-with>
+            </scheme>
+            <message>FTP receiver channel names must start with FTP_RCV_</message>
+            <apply-to>ftp-receiver-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: IDoc sender channel names must start with IDOC_SND_ -->
+        <naming>
+            <scheme>
+                <starts-with>IDOC_SND_</starts-with>
+            </scheme>
+            <message>IDoc sender channel names must start with IDOC_SND_</message>
+            <apply-to>idoc-sender-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: IDoc receiver channel names must start with IDOC_RCV_ -->
+        <naming>
+            <scheme>
+                <starts-with>IDOC_RCV_</starts-with>
+            </scheme>
+            <message>IDoc receiver channel names must start with IDOC_RCV_</message>
+            <apply-to>idoc-receiver-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: JMS sender channel names must start with JMS_SND_ -->
+        <naming>
+            <scheme>
+                <starts-with>JMS_SND_</starts-with>
+            </scheme>
+            <message>JMS sender channel names must start with JMS_SND_</message>
+            <apply-to>jms-sender-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: JMS receiver channel names must start with JMS_RCV_ -->
+        <naming>
+            <scheme>
+                <starts-with>JMS_RCV_</starts-with>
+            </scheme>
+            <message>JMS receiver channel names must start with JMS_RCV_</message>
+            <apply-to>jms-receiver-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: Kafka sender channel names must start with KAFKA_SND_ -->
+        <naming>
+            <scheme>
+                <starts-with>KAFKA_SND_</starts-with>
+            </scheme>
+            <message>Kafka sender channel names must start with KAFKA_SND_</message>
+            <apply-to>kafka-sender-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: Kafka receiver channel names must start with KAFKA_RCV_ -->
+        <naming>
+            <scheme>
+                <starts-with>KAFKA_RCV_</starts-with>
+            </scheme>
+            <message>Kafka receiver channel names must start with KAFKA_RCV_</message>
+            <apply-to>kafka-receiver-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: Mail sender channel names must start with MAIL_SND_ -->
+        <naming>
+            <scheme>
+                <starts-with>MAIL_SND_</starts-with>
+            </scheme>
+            <message>Mail sender channel names must start with MAIL_SND_</message>
+            <apply-to>mail-sender-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: Mail receiver channel names must start with MAIL_RCV_ -->
+        <naming>
+            <scheme>
+                <starts-with>MAIL_RCV_</starts-with>
+            </scheme>
+            <message>Mail receiver channel names must start with MAIL_RCV_</message>
+            <apply-to>mail-receiver-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: Microsoft SharePoint sender channel names must start with MS_SP_SND_ -->
+        <naming>
+            <scheme>
+                <starts-with>MS_SP_SND_</starts-with>
+            </scheme>
+            <message>Microsoft SharePoint sender channel names must start with MS_SP_SND_</message>
+            <apply-to>microsoft-sharepoint-sender-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: Microsoft SharePoint receiver channel names must start with MS_SP_RCV_ -->
+        <naming>
+            <scheme>
+                <starts-with>MS_SP_RCV_</starts-with>
+            </scheme>
+            <message>Microsoft SharePoint receiver channel names must start with MS_SP_RCV_</message>
+            <apply-to>microsoft-sharepoint-receiver-channel.name</apply-to>
+        </naming>
+
+        <!-- Example: OData sender channel names must start with ODATA_SND_ -->
+        <naming>
+            <scheme>
+                <starts-with>ODATA_SND_</starts-with>
+            </scheme>
+            <message>OData sender channel names must start with ODATA_SND_</message>
+            <apply-to>odata-sender-channel.name</apply-to>
+        </naming>
+	</rules>
+</cpilint>
