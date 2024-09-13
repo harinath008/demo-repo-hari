@@ -1,13 +1,9 @@
 pipeline {
 	agent any
-	
-	parameters {
-		string defaultValue: 'IF_MDG_MATMAS_INBOUND_PIM', description: 'Iflow Name', name: 'Name', trim: true
-	}
 
 	//Configure the following environment variables before executing the Jenkins Job	
 	environment {
-		IntegrationFlowID = "${Name}"
+		IntegrationFlowID = "IntegrationFlow1"
 		CPIHost = "${env.CPI_HOST}"
 		CPIOAuthHost = "${env.CPI_OAUTH_HOST}"
 		CPIOAuthCredentials = "${env.CPI_OAUTH_CRED}"	
@@ -19,7 +15,7 @@ pipeline {
    	}
 	
 	stages {
-		stage('download integration artefact and store it in GitHub') {
+		stage('download integration artefact and store it in Git') {
 			steps {
 			 	deleteDir()
 				script {
@@ -30,7 +26,7 @@ pipeline {
 						doGenerateSubmoduleConfigurations: false,
 						extensions: [
 							[$class: 'RelativeTargetDirectory',relativeTargetDir: "."],
-							//[$class: 'SparseCheckoutPaths',  sparseCheckoutPaths:[[$class:'SparseCheckoutPath', path: env.GITFolder]]]
+							[$class: 'SparseCheckoutPaths',  sparseCheckoutPaths:[[$class:'SparseCheckoutPath', path: env.GITFolder]]]
 						],
 						submoduleCfg: [],
 						userRemoteConfigs: [[
@@ -79,38 +75,22 @@ pipeline {
 					def lastindex=disposition.indexOf('.zip', index);
 					def filename=disposition.substring(index + 1, lastindex + 4);
 					def folder=env.GITFolder + '/' + filename.substring(0, filename.indexOf('.zip'));
-					def zipfolder=env.GITFolder + '/ZipFiles';
 					fileOperations([fileUnZipOperation(filePath: tempfile, targetLocation: folder)])
-					fileOperations([fileRenameOperation(source: tempfile,  destination: filename)])
-					fileOperations([fileCopyOperation(includes: filename,  targetLocation: zipfolder)])
-					env.Filename = filename;
 					cpiDownloadResponse.close();
 
 					//remove the zip
-					fileOperations([fileDeleteOperation(excludes: '', includes: filename)])
+					fileOperations([fileDeleteOperation(excludes: '', includes: tempfile)])
 						
-					dir(env.GITFolder){
+					dir(folder){
 						sh 'git add .'
 					}
 					println("Store integration artefact in Git")
 					withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: env.GITCredentials ,usernameVariable: 'GIT_AUTHOR_NAME', passwordVariable: 'GIT_PASSWORD']]) {  
 						sh 'git diff-index --quiet HEAD || git commit -am ' + '\'' + env.GitComment + '\''
-						sh('git push https://${GIT_PASSWORD}@' + env.GITRepositoryURL + ' HEAD:' + env.GITBranch)
+						sh('git push https://${GIT_AUTHOR_NAME}:${GIT_PASSWORD}@' + env.GITRepositoryURL + ' HEAD:' + env.GITBranch)
 					}				
 				}
 			}
 		}
-		stage('Code Analysis') {
-            steps {
-		    script{
-			    def zipcpilintfile = "cpilint-1.0.5.zip";
-			    def unzipcpilintfile = "cpilint";
-			    fileOperations([fileUnZipOperation(filePath: zipcpilintfile, targetLocation: unzipcpilintfile)])
-			    fileOperations([fileDeleteOperation(excludes: '', includes: zipcpilintfile)])
-			    sh "chmod a+rwx -R $WORKSPACE/cpilint"
-			    sh "$WORKSPACE/cpilint/cpilint-1.0.4/bin/cpilint -rules $WORKSPACE/rules.xml -files $WORKSPACE/IntegrationContent/IntegrationArtefacts/ZipFiles/${env.Filename}"
-		    }
-	    }
-        }
     }
 }
